@@ -17,6 +17,9 @@ firebase_options.dart
 *.aab
 info.plist
 AndroidManifest.xml
+key.properties
+*.keystore
+*.jks
 
 # IntelliJ related
 *.iml
