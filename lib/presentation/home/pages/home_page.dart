@@ -2,6 +2,8 @@ import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/auth/entities/user.dart';
 import 'package:dkejvh/presentation/home/bloc/user_info_display_cubit.dart';
 import 'package:dkejvh/presentation/home/bloc/user_info_display_state.dart';
+import 'package:dkejvh/presentation/home/widgets/budget_card.dart';
+import 'package:dkejvh/presentation/home/widgets/schedule_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,11 +19,14 @@ class HomePage extends StatelessWidget {
           children: [
             _header(context),
             const SizedBox(height: 32),
-            const Text(
-              "반갑습니다.\n서비스 이용을 준비중입니다.",
-              style: TextStyle(
-                fontSize: 21,
-                color: Colors.black,
+            const SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  ScheduleCard(),
+                  SizedBox(height: 8),
+                  BudgetCard(),
+                ],
               ),
             ),
           ],
@@ -49,10 +54,7 @@ class HomePage extends StatelessWidget {
           }
           if (state is UserInfoLoaded) {
             return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 40,
-              ),
+              padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

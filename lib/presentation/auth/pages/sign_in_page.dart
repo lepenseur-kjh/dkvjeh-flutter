@@ -8,6 +8,7 @@ import 'package:dkejvh/data/auth/models/user_sign_in_request.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_in.dart';
 import 'package:dkejvh/presentation/auth/pages/sign_up_page.dart';
 import 'package:dkejvh/presentation/home/pages/home_page.dart';
+import 'package:dkejvh/service_locator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,7 +102,7 @@ class SignInPage extends StatelessWidget {
           return BasicReactiveButton(
             onPressed: () async {
               context.read<ButtonStateCubit>().execute(
-                  usecase: SignInUseCase(),
+                  usecase: sl<SignInUseCase>(),
                   params: UserSignInRequest(
                     email: await SocialLogin.kakaoLogin(),
                     password: dotenv.env["PW"]!,
@@ -124,7 +125,7 @@ class SignInPage extends StatelessWidget {
           return BasicReactiveButton(
             onPressed: () async {
               context.read<ButtonStateCubit>().execute(
-                  usecase: SignInUseCase(),
+                  usecase: sl<SignInUseCase>(),
                   params: UserSignInRequest(
                     email: await SocialLogin.appleLogin(),
                     password: dotenv.env["PW"]!,

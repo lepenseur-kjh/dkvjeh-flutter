@@ -9,6 +9,7 @@ import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
 import 'package:dkejvh/presentation/auth/bloc/birth_date_selection_cubit.dart';
 import 'package:dkejvh/presentation/auth/bloc/gender_selection_cubit.dart';
 import 'package:dkejvh/presentation/auth/pages/guide_page.dart';
+import 'package:dkejvh/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -224,7 +225,7 @@ class InputUserinfoPage extends StatelessWidget {
                 command.createdAt = DateTime.now();
                 // request body 설정
                 context.read<ButtonStateCubit>().execute(
-                      usecase: SignUpUseCase(),
+                      usecase: sl<SignUpUseCase>(),
                       params: command,
                     );
               },
