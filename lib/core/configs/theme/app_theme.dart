@@ -20,7 +20,6 @@ class AppTheme {
           fillColor: AppColors.primary,
           hintStyle: const TextStyle(
             color: AppColors.secondBackground,
-            fontWeight: FontWeight.w400,
             fontSize: 21,
           ),
           contentPadding: const EdgeInsets.all(16),

@@ -1,5 +1,7 @@
+import 'package:dkejvh/common/helper/navigator/app_navigator.dart';
 import 'package:dkejvh/common/widgets/appbar/app_bar.dart';
 import 'package:dkejvh/common/widgets/button/basic_app_button.dart';
+import 'package:dkejvh/presentation/home/pages/add_schedule_page.dart';
 import 'package:flutter/material.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -62,7 +64,7 @@ class SchedulePage extends StatelessWidget {
         child: Builder(builder: (context) {
           return BasicAppButton(
             onPressed: () {
-              //
+              AppNavigator.push(context, AddSchedulePage());
             },
             title: "일정 등록",
           );
