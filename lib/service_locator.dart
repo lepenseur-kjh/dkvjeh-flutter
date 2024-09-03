@@ -9,6 +9,7 @@ import 'package:dkejvh/domain/auth/usecases/sign_in.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
 import 'package:dkejvh/domain/schedule/repository/schedule_repository.dart';
 import 'package:dkejvh/domain/schedule/usecases/add_schedule.dart';
+import 'package:dkejvh/domain/schedule/usecases/get_schedules.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -28,4 +29,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
   sl.registerSingleton<GetUserUsecase>(GetUserUsecase());
   sl.registerSingleton<AddScheduleUseCase>(AddScheduleUseCase());
+  sl.registerSingleton<GetSchedulesUseCase>(GetSchedulesUseCase());
 }

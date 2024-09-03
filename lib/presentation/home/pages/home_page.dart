@@ -14,23 +14,21 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _header(context),
-            const SizedBox(height: 32),
-            const SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  ScheduleCard(),
-                  SizedBox(height: 8),
-                  BudgetCard(),
-                ],
-              ),
+      body: Column(
+        children: [
+          _header(context),
+          const SizedBox(height: 32),
+          const SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                ScheduleCard(),
+                SizedBox(height: 8),
+                BudgetCard(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

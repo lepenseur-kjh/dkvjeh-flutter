@@ -6,7 +6,6 @@ import 'package:dkejvh/common/widgets/button/basic_reactive_button.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/data/auth/models/user_sign_up_command.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
-import 'package:dkejvh/presentation/auth/bloc/birth_date_selection_cubit.dart';
 import 'package:dkejvh/presentation/auth/bloc/gender_selection_cubit.dart';
 import 'package:dkejvh/presentation/auth/pages/guide_page.dart';
 import 'package:dkejvh/service_locator.dart';
@@ -21,6 +20,7 @@ class InputUserinfoPage extends StatelessWidget {
   });
 
   final TextEditingController _usernameCon = TextEditingController();
+  final TextEditingController _birthDateTextCon = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class InputUserinfoPage extends StatelessWidget {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => GenderSelectionCubit()),
-          BlocProvider(create: (context) => BirthDateSelectionCubit()),
           BlocProvider(create: (context) => ButtonStateCubit()),
         ],
         child: BlocListener<ButtonStateCubit, ButtonState>(
@@ -97,62 +96,27 @@ class InputUserinfoPage extends StatelessWidget {
   }
 
   Widget _birthDateText(BuildContext context) {
-    return BlocBuilder<BirthDateSelectionCubit, DateTime>(
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                height: 53,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: AppColors.secondBackground,
-                ),
-                child: Center(
-                  child: Text(
-                    context
-                        .read<BirthDateSelectionCubit>()
-                        .selectedDate
-                        .toString()
-                        .split(' ')[0],
-                    style: const TextStyle(
-                      fontSize: 21,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () async {
-                  context
-                      .read<BirthDateSelectionCubit>()
-                      .changeDate(await showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(DateTime.now().year + 1),
-                      ));
-                },
-                child: const Text(
-                  '생년월일 선택',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontFamily: "EastSeaDokdo",
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+    return TextField(
+        controller: _birthDateTextCon,
+        keyboardType: TextInputType.datetime,
+        decoration: const InputDecoration(hintText: "생년월일 (예: 2024/08/31)"),
+        style: const TextStyle(
+          fontSize: 21,
+          color: Colors.white,
+        ),
+        readOnly: true,
+        onTap: () async {
+          DateTime? pickedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(DateTime.now().year + 1),
+          );
+          if (pickedDate != null) {
+            _birthDateTextCon.text =
+                "${pickedDate.year}/${pickedDate.month}/${pickedDate.day}";
+          }
+        });
   }
 
   Widget _genders(BuildContext context) {
@@ -216,10 +180,7 @@ class InputUserinfoPage extends StatelessWidget {
               onPressed: () {
                 // request body 설정
                 command.username = _usernameCon.text;
-                DateTime userBirthDate =
-                    context.read<BirthDateSelectionCubit>().selectedDate;
-                command.birthDate =
-                    "${userBirthDate.year}/${userBirthDate.month}/${userBirthDate.day}";
+                command.birthDate = _birthDateTextCon.text;
                 command.gender =
                     context.read<GenderSelectionCubit>().selectedIndex;
                 command.createdAt = DateTime.now();
