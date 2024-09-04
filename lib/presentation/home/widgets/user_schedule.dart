@@ -1,6 +1,8 @@
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/schedule/entities/schedule.dart';
+import 'package:dkejvh/presentation/home/bloc/user_schedules_display_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserSchedule extends StatelessWidget {
   final ScheduleEntity schedule;
@@ -47,7 +49,9 @@ class UserSchedule extends StatelessWidget {
         ),
         IconButton(
             onPressed: () {
-              // TODO: 제거 usecase
+              context
+                  .read<UserSchedulesDisplayCubit>()
+                  .removeSchedule(schedule);
             },
             icon: Container(
               height: 30,

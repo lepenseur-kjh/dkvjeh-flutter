@@ -22,4 +22,9 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
           .toList());
     });
   }
+
+  @override
+  Future<Either> removeSchedule(String scheduleId) async {
+    return await sl<ScheduleFirebaseService>().removeSchedule(scheduleId);
+  }
 }

@@ -4,4 +4,5 @@ import 'package:dkejvh/data/schedule/models/add_schedule_command.dart';
 abstract class ScheduleRepository {
   Future<Either> addSchedule(AddScheduleCommand command);
   Future<Either> getSchedules();
+  Future<Either> removeSchedule(String scheduleId);
 }

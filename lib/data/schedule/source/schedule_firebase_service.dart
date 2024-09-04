@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class ScheduleFirebaseService {
   Future<Either> addSchedule(AddScheduleCommand command);
   Future<Either> getSchedules();
+  Future<Either> removeSchedule(String scheduleId);
 }
 
 class ScheduleFirebaseServiceImpl extends ScheduleFirebaseService {
@@ -32,6 +33,7 @@ class ScheduleFirebaseServiceImpl extends ScheduleFirebaseService {
           .collection("Users")
           .doc(user!.uid)
           .collection("Schedules")
+          .orderBy("createdAt")
           .get();
 
       List<Map> scheduels = [];
@@ -41,6 +43,22 @@ class ScheduleFirebaseServiceImpl extends ScheduleFirebaseService {
         scheduels.add(data);
       }
       return Right(scheduels);
+    } catch (e) {
+      return const Left("다시 시도해주세요.");
+    }
+  }
+
+  @override
+  Future<Either> removeSchedule(String scheduleId) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user!.uid)
+          .collection("Schedules")
+          .doc(scheduleId)
+          .delete();
+      return const Right('일정이 삭제되었습니다.');
     } catch (e) {
       return const Left("다시 시도해주세요.");
     }
