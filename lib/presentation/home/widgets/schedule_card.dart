@@ -13,24 +13,25 @@ class ScheduleCard extends StatelessWidget {
         AppNavigator.push(context, const SchedulePage());
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         height: 232,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width * 0.05,
+        ),
         decoration: BoxDecoration(
           color: AppColors.primary,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _scheduleTitle(),
-              const SizedBox(height: 20),
-              _scheduleComment(),
-              const SizedBox(height: 4),
-              _scheduleText(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _scheduleTitle(),
+            const SizedBox(height: 15),
+            _scheduleComment(),
+            const SizedBox(height: 4),
+            _scheduleText(),
+          ],
         ),
       ),
     );

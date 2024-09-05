@@ -17,29 +17,27 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const BasicAppBar(),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 40,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _signUpTitle(context),
-                const SizedBox(height: 32),
-                _welcomeText(context),
-                const SizedBox(height: 72),
-                _kakaoButton(context),
-                const SizedBox(height: 20),
-                _appleButton(context),
-                const SizedBox(height: 20),
-                _termText(context),
-              ],
-            ),
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.sizeOf(context).width,
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.sizeOf(context).width * 0.05,
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _signUpTitle(context),
+              const SizedBox(height: 32),
+              _welcomeText(context),
+              const SizedBox(height: 72),
+              _kakaoButton(context),
+              const SizedBox(height: 20),
+              _appleButton(context),
+              const SizedBox(height: 20),
+              _termText(context),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -136,7 +134,7 @@ class SignUpPage extends StatelessWidget {
           text: "(클릭)",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              // TODO: 웹뷰 (노션)
+              // TODO: Notion WebView
             },
           style: const TextStyle(
             fontFamily: "EastSeaDokdo",

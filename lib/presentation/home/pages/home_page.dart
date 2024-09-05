@@ -14,21 +14,27 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          _header(context),
-          const SizedBox(height: 32),
-          const SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                ScheduleCard(),
-                SizedBox(height: 8),
-                BudgetCard(),
-              ],
-            ),
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.sizeOf(context).width,
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.sizeOf(context).width * 0.05,
           ),
-        ],
+          child: Column(
+            children: [
+              _header(context),
+              const SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScheduleCard(),
+                    SizedBox(height: 8),
+                    BudgetCard(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -36,35 +42,30 @@ class HomePage extends StatelessWidget {
   Widget _header(BuildContext context) {
     return BlocProvider(
       create: (context) => UserInfoDisplayCubit()..displayUserInfo(),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 40,
-          right: 16,
-          left: 16,
-        ),
-        child: BlocBuilder<UserInfoDisplayCubit, UserInfoDisplayState>(
-            builder: (context, state) {
-          if (state is UserInfoLoading) {
-            return const Center(
-                child: CircularProgressIndicator(
-              color: AppColors.primary,
-            ));
-          }
-          if (state is UserInfoLoaded) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _headerUserInfo(context, state.user),
-                  _headerNotification(context),
-                ],
-              ),
-            );
-          }
-          return Container();
-        }),
-      ),
+      child: BlocBuilder<UserInfoDisplayCubit, UserInfoDisplayState>(
+          builder: (context, state) {
+        if (state is UserInfoLoading) {
+          return const Center(
+              child: CircularProgressIndicator(
+            color: AppColors.primary,
+          ));
+        }
+        if (state is UserInfoLoaded) {
+          return SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.15,
+            width: MediaQuery.sizeOf(context).width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _headerUserInfo(context, state.user),
+                _headerNotification(context),
+              ],
+            ),
+          );
+        }
+        return Container();
+      }),
     );
   }
 
@@ -81,7 +82,7 @@ class HomePage extends StatelessWidget {
   Widget _headerNotification(BuildContext context) {
     return IconButton(
         onPressed: () {
-          // 알림 페이지 이동
+          // TODO: 알림 페이지 이동
         },
         icon: Container(
           height: 50,

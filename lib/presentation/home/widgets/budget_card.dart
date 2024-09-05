@@ -8,27 +8,28 @@ class BudgetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // 관리
+        // TODO: 만원의 행복
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 232,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width * 0.05,
+        ),
         decoration: BoxDecoration(
           color: AppColors.primary,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _budgetTitle(),
-              const SizedBox(height: 20),
-              _budgetComment(),
-              const SizedBox(height: 4),
-              _budgetText(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _budgetTitle(),
+            const SizedBox(height: 15),
+            _budgetComment(),
+            const SizedBox(height: 4),
+            _budgetText(),
+          ],
         ),
       ),
     );

@@ -17,9 +17,8 @@ class SplashPage extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is UnAuthenticated) {
-          // TODO: sign_in 페이지를 둬야 하는가?
-          // firebase auth를 사용했을 때, 로그아웃을 구현하는 게 아니라면
-          // 이 두 페이지를 나눌 필요가 없다.
+          // TODO: 로그인 페이지를 둬야 하는가?
+          // firebase auth를 사용했을 때, 로그아웃을 구현하는 게 아니라면, 회원가입 페이지만 존재하면 된다.
           AppNavigator.pushReplacement(context, const SignInPage());
         }
         if (state is Authenticated) {

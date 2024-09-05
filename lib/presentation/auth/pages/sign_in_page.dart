@@ -40,31 +40,29 @@ class SignInPage extends StatelessWidget {
               AppNavigator.pushAndRemove(context, const HomePage());
             }
           },
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 40,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _welcomeTitle(context),
-                    const SizedBox(height: 32),
-                    _welcomeText(context),
-                    const SizedBox(height: 72),
-                    _kakaoButton(context),
-                    const SizedBox(height: 20),
-                    _appleButton(context),
-                    const SizedBox(height: 20),
-                    _signUpText(context),
-                    const SizedBox(height: 20),
-                    _termText(context),
-                  ],
-                ),
+          child: SafeArea(
+            child: Container(
+              width: MediaQuery.sizeOf(context).width,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.sizeOf(context).width * 0.05,
               ),
-            ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _welcomeTitle(context),
+                  const SizedBox(height: 32),
+                  _welcomeText(context),
+                  const SizedBox(height: 72),
+                  _kakaoButton(context),
+                  const SizedBox(height: 20),
+                  _appleButton(context),
+                  const SizedBox(height: 20),
+                  _signUpText(context),
+                  const SizedBox(height: 20),
+                  _termText(context),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -178,7 +176,7 @@ class SignInPage extends StatelessWidget {
           text: "(클릭)",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              // TODO: 웹뷰 (노션)
+              // TODO: Notion WebView
             },
           style: const TextStyle(
             fontFamily: "EastSeaDokdo",
