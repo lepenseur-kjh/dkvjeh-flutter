@@ -20,7 +20,8 @@ class AppNavigator {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => widget),
-      (Route<dynamic> route) => false, // 모든 이전 루트 제거
+      // (Route<dynamic> route) => false, // 모든 이전 루트 제거
+      (Route<dynamic> route) => route.isFirst, // 첫 번째 (홈) 빼고 모두 제거
     );
   }
 }

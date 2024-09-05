@@ -41,30 +41,28 @@ class AddSchedulePage extends StatelessWidget {
               AppNavigator.pushAndRemove(context, const SchedulePage());
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 40,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _scheduleTitle(context),
-                    const SizedBox(height: 32),
-                    _scheduleContent(context),
-                    const SizedBox(height: 20),
-                    _scheduleNotificationTime(context),
-                    const SizedBox(height: 20),
-                    _scheduleDeadline(context),
-                  ],
-                ),
+          child: SafeArea(
+            child: Container(
+              width: MediaQuery.sizeOf(context).width,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.sizeOf(context).width * 0.05,
               ),
-              const Spacer(),
-              _finishButton(context),
-            ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _scheduleTitle(context),
+                  const SizedBox(height: 32),
+                  _scheduleContent(context),
+                  const SizedBox(height: 20),
+                  _scheduleNotificationTime(context),
+                  const SizedBox(height: 20),
+                  _scheduleDeadline(context),
+                  const Spacer(),
+                  _finishButton(context),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -136,7 +134,6 @@ class AddSchedulePage extends StatelessWidget {
     return Container(
       height: 100,
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Center(
         child: Builder(
           builder: (context) {

@@ -15,26 +15,24 @@ class GuidePage extends StatelessWidget {
       appBar: const BasicAppBar(
         hideBack: true,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 40,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _guideTitle(context),
-                const SizedBox(height: 32),
-                _guideText(context),
-              ],
-            ),
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.sizeOf(context).width,
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.sizeOf(context).width * 0.05,
           ),
-          const Spacer(),
-          _finishButton(context),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _guideTitle(context),
+              const SizedBox(height: 32),
+              _guideText(context),
+              const Spacer(),
+              _finishButton(context),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -65,7 +63,6 @@ class GuidePage extends StatelessWidget {
     return Container(
       height: 100,
       color: AppColors.background,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Center(
         child: BasicAppButton(
           onPressed: () {

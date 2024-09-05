@@ -1,6 +1,6 @@
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/schedule/entities/schedule.dart';
-import 'package:dkejvh/presentation/home/bloc/user_schedules_display_cubit.dart';
+import 'package:dkejvh/presentation/home/bloc/user_schedules_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,24 +14,25 @@ class UserSchedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       height: 232,
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.sizeOf(context).width * 0.05,
+      ),
       decoration: BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _scheduleContent(context, schedule),
-            const SizedBox(height: 14),
-            _scheduleNotificationTime(context, schedule),
-            const SizedBox(height: 14),
-            _scheduleDeadline(context, schedule),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _scheduleContent(context, schedule),
+          const SizedBox(height: 14),
+          _scheduleNotificationTime(context, schedule),
+          const SizedBox(height: 14),
+          _scheduleDeadline(context, schedule),
+        ],
       ),
     );
   }
@@ -40,18 +41,21 @@ class UserSchedule extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          schedule.content,
-          style: const TextStyle(
-            fontSize: 31,
-            color: Colors.white,
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.67,
+          child: Text(
+            schedule.content,
+            style: const TextStyle(
+              fontSize: 31,
+              color: Colors.white,
+            ),
+            maxLines: 1, // 한 줄로 제한
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         IconButton(
             onPressed: () {
-              context
-                  .read<UserSchedulesDisplayCubit>()
-                  .removeSchedule(schedule);
+              context.read<UserSchedulesCubit>().removeSchedule(schedule);
             },
             icon: Container(
               height: 30,
