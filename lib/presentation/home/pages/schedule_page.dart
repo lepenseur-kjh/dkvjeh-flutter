@@ -9,6 +9,7 @@ import 'package:dkejvh/presentation/home/pages/add_schedule_page.dart';
 import 'package:dkejvh/presentation/home/widgets/user_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});
@@ -30,27 +31,38 @@ class SchedulePage extends StatelessWidget {
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
-              if (state is UserSchedulesDisplayLoaded) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.sizeOf(context).width * 0.05),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _scheduleTitle(context),
-                      const SizedBox(height: 32),
-                      _schedule(context, state.schedules),
-                      const Spacer(),
-                      _addButton(context, state.schedules),
-                    ],
-                  ),
-                );
+              if (state is UserSchedulesLoading) {
+                return _schedulePage(context, true, []);
+              }
+              if (state is UserSchedulesLoaded) {
+                return _schedulePage(context, false, state.schedules);
               }
               return Container();
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _schedulePage(
+    BuildContext context,
+    bool isLoading,
+    List<ScheduleEntity> schedules,
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width * 0.05),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _scheduleTitle(context),
+          const SizedBox(height: 32),
+          _schedule(context, isLoading, schedules),
+          const Spacer(),
+          _addButton(context, schedules),
+        ],
       ),
     );
   }
@@ -65,7 +77,11 @@ class SchedulePage extends StatelessWidget {
     );
   }
 
-  Widget _schedule(BuildContext context, List<ScheduleEntity> schedules) {
+  Widget _schedule(
+    BuildContext context,
+    bool isLoading,
+    List<ScheduleEntity> schedules,
+  ) {
     if (schedules.isEmpty) {
       return const Text(
         "꼭 기억해야 할 일을 등록해보세요. (최대 3개)\n" +
@@ -78,16 +94,19 @@ class SchedulePage extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.55,
-        child: ListView.separated(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return UserSchedule(schedule: schedules[index]);
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemCount: schedules.length,
+      return Skeletonizer(
+        enabled: isLoading,
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.55,
+          child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              return UserSchedule(schedule: schedules[index]);
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemCount: schedules.length,
+          ),
         ),
       );
     }

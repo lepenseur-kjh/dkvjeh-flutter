@@ -2,11 +2,11 @@ import 'package:dkejvh/domain/schedule/entities/schedule.dart';
 
 abstract class UserSchedulesState {}
 
-class UserSchedulesDisplayLoading extends UserSchedulesState {}
+class UserSchedulesLoading extends UserSchedulesState {}
 
-class UserSchedulesDisplayLoaded extends UserSchedulesState {
+class UserSchedulesLoaded extends UserSchedulesState {
   final List<ScheduleEntity> schedules;
-  UserSchedulesDisplayLoaded({required this.schedules});
+  UserSchedulesLoaded({required this.schedules});
 }
 
 class LoadUserSchedulesFailure extends UserSchedulesState {

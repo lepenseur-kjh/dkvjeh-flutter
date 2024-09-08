@@ -6,19 +6,19 @@ import 'package:dkejvh/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserSchedulesCubit extends Cubit<UserSchedulesState> {
-  UserSchedulesCubit() : super(UserSchedulesDisplayLoading());
+  UserSchedulesCubit() : super(UserSchedulesLoading());
 
   void displayUserSchedules() async {
     var resp = await sl<GetSchedulesUseCase>().call();
     resp.fold((error) {
       emit(LoadUserSchedulesFailure(errorMsg: error));
     }, (data) {
-      emit(UserSchedulesDisplayLoaded(schedules: data));
+      emit(UserSchedulesLoaded(schedules: data));
     });
   }
 
   Future<void> removeSchedule(ScheduleEntity schedule) async {
-    emit(UserSchedulesDisplayLoading());
+    emit(UserSchedulesLoading());
     var resp = await sl<RemoveScheduleUseCase>().call(params: schedule.id);
     resp.fold((error) {
       emit(LoadUserSchedulesFailure(errorMsg: error));
