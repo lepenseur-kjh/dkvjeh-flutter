@@ -3,6 +3,7 @@ import 'package:dkejvh/common/widgets/appbar/app_bar.dart';
 import 'package:dkejvh/common/widgets/button/basic_app_button.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/schedule/entities/schedule.dart';
+import 'package:dkejvh/presentation/home/bloc/schedules_display_cubit.dart';
 import 'package:dkejvh/presentation/home/bloc/user_schedules_cubit.dart';
 import 'package:dkejvh/presentation/home/bloc/user_schedules_state.dart';
 import 'package:dkejvh/presentation/home/pages/add_schedule_page.dart';
@@ -35,7 +36,15 @@ class SchedulePage extends StatelessWidget {
                 return _schedulePage(context, true, []);
               }
               if (state is UserSchedulesLoaded) {
-                return _schedulePage(context, false, state.schedules);
+                return BlocProvider(
+                  create: (context) => SchedulesDisplayCubit()
+                    ..displaySchedules(state.schedules),
+                  child:
+                      BlocBuilder<SchedulesDisplayCubit, List<ScheduleEntity>>(
+                          builder: (context, subState) {
+                    return _schedulePage(context, false, subState);
+                  }),
+                );
               }
               return Container();
             },
