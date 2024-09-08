@@ -45,6 +45,7 @@ dependencies:
   firebase_auth:
   firebase_core:
   cloud_firestore:
+  firebase_messaging:
 
   flutter_dotenv:
   flutter_svg:

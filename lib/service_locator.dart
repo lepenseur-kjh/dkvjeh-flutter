@@ -7,6 +7,7 @@ import 'package:dkejvh/domain/auth/usecases/get_user.dart';
 import 'package:dkejvh/domain/auth/usecases/is_logged_in.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_in.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
+import 'package:dkejvh/domain/auth/usecases/update_fcm_token.dart';
 import 'package:dkejvh/domain/schedule/repository/schedule_repository.dart';
 import 'package:dkejvh/domain/schedule/usecases/add_schedule.dart';
 import 'package:dkejvh/domain/schedule/usecases/get_schedules.dart';
@@ -32,4 +33,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AddScheduleUseCase>(AddScheduleUseCase());
   sl.registerSingleton<GetSchedulesUseCase>(GetSchedulesUseCase());
   sl.registerSingleton<RemoveScheduleUseCase>(RemoveScheduleUseCase());
+  sl.registerSingleton<UpdateFcmTokenUseCase>(UpdateFcmTokenUseCase());
 }

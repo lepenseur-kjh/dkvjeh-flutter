@@ -9,6 +9,7 @@ abstract class AuthFirebaseService {
   Future<Either> signUp(UserSignUpCommand command);
   Future<Either> signIn(UserSignInRequest request);
   Future<Either> getUser();
+  Future<Either> updateFcmToken(String fcmToken);
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -87,6 +88,22 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
           .get()
           .then((e) => e.data());
       return Right(userData);
+    } catch (e) {
+      return const Left("다시 시도해주세요.");
+    }
+  }
+
+  @override
+  Future<Either> updateFcmToken(String fcmToken) async {
+    try {
+      var currentUser = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(currentUser?.uid)
+          .update({
+        "fcmToken": fcmToken,
+      });
+      return const Right("fcm token 업데이트 성공");
     } catch (e) {
       return const Left("다시 시도해주세요.");
     }

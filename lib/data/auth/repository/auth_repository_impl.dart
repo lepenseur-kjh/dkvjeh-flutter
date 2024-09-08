@@ -32,4 +32,9 @@ class AuthRepositoryImpl extends AuthRepository {
       return Right(UserModel.fromMap(data).toEntity());
     });
   }
+
+  @override
+  Future<Either> updateFcmToken(String fcmToken) async {
+    return await sl<AuthFirebaseService>().updateFcmToken(fcmToken);
+  }
 }

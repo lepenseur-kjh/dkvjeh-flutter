@@ -7,4 +7,5 @@ abstract class AuthRepository {
   Future<Either> signUp(UserSignUpCommand command);
   Future<Either> signIn(UserSignInRequest request);
   Future<Either> getUser();
+  Future<Either> updateFcmToken(String fcmToken);
 }
