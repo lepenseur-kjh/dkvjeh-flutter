@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app_colors.dart';
 
@@ -8,6 +9,8 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.background,
       brightness: Brightness.dark,
       fontFamily: 'EastSeaDokdo',
+      appBarTheme:
+          const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
       snackBarTheme: const SnackBarThemeData(
         backgroundColor: Colors.black,
         contentTextStyle: TextStyle(

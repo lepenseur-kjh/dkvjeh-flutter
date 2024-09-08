@@ -6,6 +6,7 @@ import 'package:dkejvh/presentation/home/widgets/budget_card.dart';
 import 'package:dkejvh/presentation/home/widgets/schedule_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -45,24 +46,10 @@ class HomePage extends StatelessWidget {
       child: BlocBuilder<UserInfoCubit, UserInfoState>(
         builder: (context, state) {
           if (state is UserInfoLoading) {
-            return const Center(
-                child: CircularProgressIndicator(
-              color: AppColors.primary,
-            ));
+            return _homePage(context, true, null);
           }
           if (state is UserInfoLoaded) {
-            return SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.15,
-              width: MediaQuery.sizeOf(context).width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _headerUserInfo(context, state.user),
-                  _headerNotification(context),
-                ],
-              ),
-            );
+            return _homePage(context, false, state.user);
           }
           return Container();
         },
@@ -70,12 +57,38 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _headerUserInfo(BuildContext context, UserEntity user) {
-    return Text(
-      "반갑습니다,\n${user.username}님",
-      style: const TextStyle(
-        fontSize: 24,
-        color: Colors.black,
+  Widget _homePage(
+    BuildContext context,
+    bool isLoading,
+    UserEntity? user,
+  ) {
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.15,
+      width: MediaQuery.sizeOf(context).width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _headerUserInfo(context, isLoading, user),
+          _headerNotification(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerUserInfo(
+    BuildContext context,
+    bool isLoading,
+    UserEntity? user,
+  ) {
+    return Skeletonizer(
+      enabled: isLoading,
+      child: Text(
+        "반갑습니다,\n${user?.username}님",
+        style: const TextStyle(
+          fontSize: 24,
+          color: Colors.black,
+        ),
       ),
     );
   }

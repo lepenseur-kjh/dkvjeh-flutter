@@ -51,6 +51,8 @@ dependencies:
   flutter_bloc:
   dartz:
   get_it:
+  skeletonizer:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
