@@ -12,11 +12,15 @@ import Firebase
       // 파이어베이스 (맨 처음 선언해야 함.)
       FirebaseApp.configure()
       
-      GeneratedPluginRegistrant.register(with: self)
-      
       // 카카오
       KakaoSDK.initSDK(appKey: "${NATIVE_APP_KEY}")
       
+      // 로컬 푸시 알림
+      if #available(iOS 10.0, *) {
+          UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+      }
+      
+      GeneratedPluginRegistrant.register(with: self)
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

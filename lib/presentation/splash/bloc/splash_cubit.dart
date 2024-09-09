@@ -14,6 +14,7 @@ class SplashCubit extends Cubit<SplashState> {
     if (isLogin) {
       // 로그인 시, FCM 토큰 업데이트
       String? fcmToken = await FirebaseMessaging.instance.getToken();
+      print("fcm: $fcmToken");
       await sl<UpdateFcmTokenUseCase>().call(params: fcmToken);
       emit(Authenticated());
     } else {

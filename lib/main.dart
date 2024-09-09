@@ -3,6 +3,7 @@ import 'package:dkejvh/firebase_options.dart';
 import 'package:dkejvh/presentation/splash/bloc/splash_cubit.dart';
 import 'package:dkejvh/presentation/splash/pages/splash_page.dart';
 import 'package:dkejvh/service_locator.dart';
+import 'package:dkejvh/push_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,10 @@ Future<void> main() async {
     nativeAppKey: dotenv.env["KAKAO_KEY"],
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await permissionWithNotification();
+  await initialization();
   await initializeDependencies();
+  await setupPushNotification();
   runApp(const MyApp());
 }
 

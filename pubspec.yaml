@@ -47,6 +47,9 @@ dependencies:
   cloud_firestore:
   firebase_messaging:
 
+  permission_handler:
+  flutter_local_notifications:
+
   flutter_dotenv:
   flutter_svg:
   flutter_bloc:
