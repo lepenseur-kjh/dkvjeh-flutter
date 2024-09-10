@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dkejvh/data/auth/models/update_fcm_command.dart';
 import 'package:dkejvh/data/auth/models/user.dart';
 import 'package:dkejvh/data/auth/models/user_sign_in_request.dart';
 import 'package:dkejvh/data/auth/models/user_sign_up_command.dart';
@@ -34,7 +35,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either> updateFcmToken(String fcmToken) async {
-    return await sl<AuthFirebaseService>().updateFcmToken(fcmToken);
+  Future<Either> updateFcmToken(UpdateFcmCommand command) async {
+    return await sl<AuthFirebaseService>().updateFcmToken(command);
   }
 }

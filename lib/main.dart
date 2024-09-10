@@ -19,7 +19,7 @@ Future<void> main() async {
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await permissionWithNotification();
-  await initialization();
+  await initializeLocalNotification();
   await initializeDependencies();
   await setupPushNotification();
   runApp(const MyApp());

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dkejvh/data/auth/models/update_fcm_command.dart';
 import 'package:dkejvh/data/auth/models/user_sign_in_request.dart';
 import 'package:dkejvh/data/auth/models/user_sign_up_command.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +10,7 @@ abstract class AuthFirebaseService {
   Future<Either> signUp(UserSignUpCommand command);
   Future<Either> signIn(UserSignInRequest request);
   Future<Either> getUser();
-  Future<Either> updateFcmToken(String fcmToken);
+  Future<Either> updateFcmToken(UpdateFcmCommand command);
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -94,14 +95,15 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
   }
 
   @override
-  Future<Either> updateFcmToken(String fcmToken) async {
+  Future<Either> updateFcmToken(UpdateFcmCommand command) async {
     try {
       var currentUser = FirebaseAuth.instance.currentUser;
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(currentUser?.uid)
           .update({
-        "fcmToken": fcmToken,
+        "fcmToken": command.fcmToken,
+        "mobileOS": command.mobileOS,
       });
       return const Right("fcm token 업데이트 성공");
     } catch (e) {
