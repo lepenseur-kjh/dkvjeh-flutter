@@ -57,6 +57,7 @@ dependencies:
   get_it:
   skeletonizer:
   shared_preferences:
+  percent_indicator:
 
 dev_dependencies:
   flutter_test:

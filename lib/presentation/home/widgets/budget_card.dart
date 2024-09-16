@@ -1,4 +1,6 @@
+import 'package:dkejvh/common/helper/navigator/app_navigator.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
+import 'package:dkejvh/presentation/home/pages/budget_page.dart';
 import 'package:flutter/material.dart';
 
 class BudgetCard extends StatelessWidget {
@@ -8,7 +10,7 @@ class BudgetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: 만원의 행복
+        AppNavigator.push(context, const BudgetPage());
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -37,7 +39,7 @@ class BudgetCard extends StatelessWidget {
 
   Widget _budgetTitle() {
     return const Text(
-      "만원의 행복",
+      "생존 가계부",
       style: TextStyle(
         fontSize: 31,
         color: Colors.white,
@@ -57,7 +59,7 @@ class BudgetCard extends StatelessWidget {
 
   Widget _budgetText() {
     return const Text(
-      "1. 하루 사용 금액 설정\n" + "2. 사용 금액 차감하기\n" + "3. 목표 달성",
+      "1. 생존 일수, 생존 금액 설정\n" + "2. 생존 진행하기\n" + "3. 목표 달성",
       style: TextStyle(
         fontSize: 21,
         color: Colors.white,
