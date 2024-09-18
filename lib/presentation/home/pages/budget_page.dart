@@ -22,7 +22,10 @@ class BudgetPage extends StatelessWidget {
             create: (context) => BudgetDisplayCubit()..displayBudget(),
             child: BlocBuilder<BudgetDisplayCubit, BudgetEntity?>(
               builder: (context, state) {
-                return _bugdetPage(context, false, state!);
+                if (state == null) {
+                  return const CircularProgressIndicator();
+                }
+                return _bugdetPage(context, false, state);
               },
             ),
           ),
@@ -79,9 +82,16 @@ class BudgetPage extends StatelessWidget {
           color: Colors.black,
         ),
       );
-    } else {
+    } else if (budget.budgetStatus == BudgetStatus.starting) {
+      return Text("거지 이미지");
+    } else if (budget.budgetStatus == BudgetStatus.inProgress) {
       // TODO: 상태에 따른 이미지
-      return Container();
+      return Text("덜 거지 이미지");
+    } else if (budget.budgetStatus == BudgetStatus.finishing) {
+      return Text("덜덜 거지 이미지");
+    } else {
+      // BudgetStatus.completed
+      return Text("노예 탈출 이미지");
     }
   }
 
@@ -100,14 +110,15 @@ class BudgetPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        const SizedBox(height: 6),
         LinearPercentIndicator(
           width: MediaQuery.of(context).size.width * 0.90,
           animation: true,
           lineHeight: 30.0,
           animationDuration: 2500,
-          percent: budget.remainBudgetPercent * 100,
+          percent: 1 - budget.remainBudgetPercent,
           center: Text(
-            "${budget.remainBudgetPercent * 100}%",
+            "${(1 - budget.remainBudgetPercent) * 100}%",
             style: const TextStyle(
               fontSize: 21,
               color: Colors.white,
@@ -118,18 +129,19 @@ class BudgetPage extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          "생존 진행률: ${budget.livingDays - budget.passedDays}일 / ${budget.livingDays}일",
+          "생존 진행률: ${budget.passedDays}일 / ${budget.livingDays}일",
           style: const TextStyle(
             fontSize: 21,
             color: Colors.black,
           ),
         ),
+        const SizedBox(height: 6),
         LinearPercentIndicator(
           width: MediaQuery.of(context).size.width * 0.90,
           animation: true,
           lineHeight: 30.0,
           animationDuration: 2500,
-          percent: budget.remainDaysPercent * 100,
+          percent: budget.remainDaysPercent,
           center: Text(
             "${budget.remainDaysPercent * 100}%",
             style: const TextStyle(

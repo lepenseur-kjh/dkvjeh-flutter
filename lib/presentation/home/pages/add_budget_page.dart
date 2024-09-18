@@ -4,7 +4,10 @@ import 'package:dkejvh/common/helper/navigator/app_navigator.dart';
 import 'package:dkejvh/common/widgets/appbar/app_bar.dart';
 import 'package:dkejvh/common/widgets/button/basic_reactive_button.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
+import 'package:dkejvh/data/budget/models/add_budget_command.dart';
+import 'package:dkejvh/domain/budget/usecases/add_budget.dart';
 import 'package:dkejvh/presentation/home/pages/budget_page.dart';
+import 'package:dkejvh/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -104,8 +107,12 @@ class AddBudgetPage extends StatelessWidget {
           builder: (context) {
             return BasicReactiveButton(
               onPressed: () {
-                // TODO: state 데이터 변경
-                AppNavigator.pushAndRemove(context, const BudgetPage());
+                context.read<ButtonStateCubit>().execute(
+                    usecase: sl<AddBudgetUsecase>(),
+                    params: AddBudgetCommand(
+                      livingDays: int.parse(_livingDaysCon.text),
+                      livingBudget: int.parse(_livingBudgetCon.text),
+                    ));
               },
               title: "등록",
             );

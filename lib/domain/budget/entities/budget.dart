@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 enum BudgetStatus {
   pending,
   starting,
@@ -27,17 +29,40 @@ class BudgetEntity {
     required this.budgetStatus,
   });
 
-  factory BudgetEntity.initialize() {
-    // TODO: SharedPreference 사용
-    return const BudgetEntity(
-      livingDays: 0,
-      passedDays: 0,
-      remainDaysPercent: 0.0,
-      livingBudget: 0,
-      usedBudget: 0,
-      recommendedDailyBudget: 0,
-      remainBudgetPercent: 0.0,
-      budgetStatus: BudgetStatus.pending,
+  static Future<BudgetEntity> initialize() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    int livingDays = prefs.getInt("livingDays") ?? 0;
+    int passedDays = prefs.getInt("passedDays") ?? 0;
+    int livingBudget = prefs.getInt("livingBudget") ?? 0;
+    int usedBudget = prefs.getInt("usedBudget") ?? 0;
+    String budgetStatus = prefs.getString("budgetStatus") ?? "";
+
+    int recommendedDailyBudget = 0;
+    if (livingDays != 0 && livingBudget != 0) {
+      recommendedDailyBudget = livingBudget ~/ livingDays;
+    }
+    double remainDaysPercent = 0.0;
+    if (livingDays != 0 && passedDays != 0) {
+      remainDaysPercent =
+          double.parse((passedDays / livingDays).toStringAsFixed(2));
+    }
+    double remainBudgetPercent = 0.0;
+    if (livingBudget != 0 && usedBudget != 0) {
+      remainBudgetPercent =
+          double.parse((usedBudget / livingBudget).toStringAsFixed(2));
+    }
+
+    return BudgetEntity(
+      livingDays: livingDays,
+      passedDays: passedDays,
+      remainDaysPercent: remainDaysPercent,
+      livingBudget: livingBudget,
+      usedBudget: usedBudget,
+      recommendedDailyBudget: recommendedDailyBudget,
+      remainBudgetPercent: remainBudgetPercent,
+      budgetStatus:
+          budgetStatus == "" ? BudgetStatus.pending : BudgetStatus.starting,
     );
   }
 }
