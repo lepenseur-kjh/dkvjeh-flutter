@@ -191,8 +191,9 @@ class BudgetPage extends StatelessWidget {
           } else {
             return BasicAppButton(
               onPressed: () {
-                // TODO: 다음 진행에 따른 Alert
+                // starting ~ finishing 단계
                 // state 데이터 변경
+                // Alert 구현
               },
               title: "생존 진행",
             );

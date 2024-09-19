@@ -36,8 +36,13 @@ class BudgetEntity {
     int passedDays = prefs.getInt("passedDays") ?? 0;
     int livingBudget = prefs.getInt("livingBudget") ?? 0;
     int usedBudget = prefs.getInt("usedBudget") ?? 0;
-    String budgetStatus = prefs.getString("budgetStatus") ?? "";
+    String budgetStatusKey = prefs.getString("budgetStatus") ?? "";
 
+    // TODO: 생존을 진행하면서 변화하는 값 처리
+    // 1. pending -> starting
+    // 2. starting -> inProgess
+    // 3. inProgress -> finishing
+    // 4. finishing -> completed
     int recommendedDailyBudget = 0;
     if (livingDays != 0 && livingBudget != 0) {
       recommendedDailyBudget = livingBudget ~/ livingDays;
@@ -52,6 +57,10 @@ class BudgetEntity {
       remainBudgetPercent =
           double.parse((usedBudget / livingBudget).toStringAsFixed(2));
     }
+    BudgetStatus budgetStatus = BudgetStatus.pending;
+    if (budgetStatusKey == "starting") {
+      budgetStatus = BudgetStatus.starting;
+    }
 
     return BudgetEntity(
       livingDays: livingDays,
@@ -61,8 +70,7 @@ class BudgetEntity {
       usedBudget: usedBudget,
       recommendedDailyBudget: recommendedDailyBudget,
       remainBudgetPercent: remainBudgetPercent,
-      budgetStatus:
-          budgetStatus == "" ? BudgetStatus.pending : BudgetStatus.starting,
+      budgetStatus: budgetStatus,
     );
   }
 }
