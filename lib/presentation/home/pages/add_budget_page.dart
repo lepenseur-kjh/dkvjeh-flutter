@@ -107,11 +107,13 @@ class AddBudgetPage extends StatelessWidget {
           builder: (context) {
             return BasicReactiveButton(
               onPressed: () {
+                // TODO: 0보다 작은 값 입력 시, 방지
+                // TODO: 값 입력 없이 완료 버튼 누를 때, 방지
                 context.read<ButtonStateCubit>().execute(
                     usecase: sl<AddBudgetUsecase>(),
                     params: AddBudgetCommand(
-                      livingDays: int.parse(_livingDaysCon.text),
-                      livingBudget: int.parse(_livingBudgetCon.text),
+                      livingDays: int.parse(_livingDaysCon.text).abs(),
+                      livingBudget: int.parse(_livingBudgetCon.text).abs(),
                     ));
               },
               title: "등록",

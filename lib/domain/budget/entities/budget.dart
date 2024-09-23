@@ -2,9 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum BudgetStatus {
   pending,
-  starting,
   inProgress,
-  finishing,
   completed,
 }
 
@@ -38,11 +36,9 @@ class BudgetEntity {
     int usedBudget = prefs.getInt("usedBudget") ?? 0;
     String budgetStatusKey = prefs.getString("budgetStatus") ?? "";
 
-    // TODO: 생존을 진행하면서 변화하는 값 처리
-    // 1. pending -> starting
-    // 2. starting -> inProgess
-    // 3. inProgress -> finishing
-    // 4. finishing -> completed
+    // 1. pending -> inProgess
+    // 2. inProgress -> completed
+    // 3. completed -> pending
     int recommendedDailyBudget = 0;
     if (livingDays != 0 && livingBudget != 0) {
       recommendedDailyBudget = livingBudget ~/ livingDays;
@@ -58,8 +54,10 @@ class BudgetEntity {
           double.parse((usedBudget / livingBudget).toStringAsFixed(2));
     }
     BudgetStatus budgetStatus = BudgetStatus.pending;
-    if (budgetStatusKey == "starting") {
-      budgetStatus = BudgetStatus.starting;
+    if (budgetStatusKey == "inProgress") {
+      budgetStatus = BudgetStatus.inProgress;
+    } else if (budgetStatusKey == "completed") {
+      budgetStatus = BudgetStatus.completed;
     }
 
     return BudgetEntity(

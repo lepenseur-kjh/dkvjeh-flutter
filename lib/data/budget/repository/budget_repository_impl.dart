@@ -9,4 +9,14 @@ class BudgetRepositoryImpl extends BudgetRepository {
   Future<Either> addBudget(AddBudgetCommand command) async {
     return await sl<BudgetLocalService>().addBudget(command);
   }
+
+  @override
+  Future<Either> substractBudget(int useBudget) async {
+    return await sl<BudgetLocalService>().substractBudget(useBudget);
+  }
+
+  @override
+  Future<Either> resetBudget() async {
+    return await sl<BudgetLocalService>().resetBudget();
+  }
 }

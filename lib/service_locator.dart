@@ -12,6 +12,8 @@ import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
 import 'package:dkejvh/domain/auth/usecases/update_fcm_token.dart';
 import 'package:dkejvh/domain/budget/repository/budget_repository.dart';
 import 'package:dkejvh/domain/budget/usecases/add_budget.dart';
+import 'package:dkejvh/domain/budget/usecases/reset_budget.dart';
+import 'package:dkejvh/domain/budget/usecases/substract_budget.dart';
 import 'package:dkejvh/domain/schedule/repository/schedule_repository.dart';
 import 'package:dkejvh/domain/schedule/usecases/add_schedule.dart';
 import 'package:dkejvh/domain/schedule/usecases/get_schedules.dart';
@@ -41,4 +43,6 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<RemoveScheduleUseCase>(RemoveScheduleUseCase());
   sl.registerSingleton<UpdateFcmTokenUseCase>(UpdateFcmTokenUseCase());
   sl.registerSingleton<AddBudgetUsecase>(AddBudgetUsecase());
+  sl.registerSingleton<SubstractBudgetUseCase>(SubstractBudgetUseCase());
+  sl.registerSingleton<ResetBudgetUseCase>(ResetBudgetUseCase());
 }

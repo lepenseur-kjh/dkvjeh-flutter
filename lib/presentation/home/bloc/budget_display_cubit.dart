@@ -8,14 +8,4 @@ class BudgetDisplayCubit extends Cubit<BudgetEntity?> {
     final initial = await BudgetEntity.initialize();
     emit(initial);
   }
-
-  // void removeSchedule(ScheduleEntity schedule) async {
-  //   var resp = await sl<RemoveScheduleUseCase>().call(params: schedule.id);
-  //   resp.fold((error) {
-  //     //
-  //   }, (data) {
-  //     initial = initial.where((e) => e.id != schedule.id).toList();
-  //     emit(initial);
-  //   });
-  // }
 }

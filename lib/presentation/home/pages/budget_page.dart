@@ -1,10 +1,17 @@
+import 'package:dkejvh/common/bloc/button_state_cubit.dart';
 import 'package:dkejvh/common/helper/navigator/app_navigator.dart';
 import 'package:dkejvh/common/widgets/appbar/app_bar.dart';
 import 'package:dkejvh/common/widgets/button/basic_app_button.dart';
+import 'package:dkejvh/common/widgets/button/basic_reactive_button.dart';
+import 'package:dkejvh/core/configs/assets/app_images.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/budget/entities/budget.dart';
+import 'package:dkejvh/domain/budget/usecases/reset_budget.dart';
+import 'package:dkejvh/domain/budget/usecases/substract_budget.dart';
 import 'package:dkejvh/presentation/home/bloc/budget_display_cubit.dart';
 import 'package:dkejvh/presentation/home/pages/add_budget_page.dart';
+import 'package:dkejvh/presentation/home/widgets/budget_alert.dart';
+import 'package:dkejvh/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -18,8 +25,12 @@ class BudgetPage extends StatelessWidget {
         backgroundColor: AppColors.background,
         appBar: const BasicAppBar(),
         body: SafeArea(
-          child: BlocProvider(
-            create: (context) => BudgetDisplayCubit()..displayBudget(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => BudgetDisplayCubit()..displayBudget()),
+              BlocProvider(create: (context) => ButtonStateCubit()),
+            ],
             child: BlocBuilder<BudgetDisplayCubit, BudgetEntity?>(
               builder: (context, state) {
                 if (state == null) {
@@ -82,16 +93,30 @@ class BudgetPage extends StatelessWidget {
           color: Colors.black,
         ),
       );
-    } else if (budget.budgetStatus == BudgetStatus.starting) {
-      return Text("거지 이미지");
     } else if (budget.budgetStatus == BudgetStatus.inProgress) {
-      // TODO: 상태에 따른 이미지
-      return Text("덜 거지 이미지");
-    } else if (budget.budgetStatus == BudgetStatus.finishing) {
-      return Text("덜덜 거지 이미지");
+      return Container(
+        height: 187,
+        width: MediaQuery.sizeOf(context).width,
+        decoration: BoxDecoration(
+            image: const DecorationImage(
+                image: AssetImage(AppImages.budgetInProgress),
+                fit: BoxFit.fill),
+            color: AppColors.background,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8)),
+      );
     } else {
-      // BudgetStatus.completed
-      return Text("노예 탈출 이미지");
+      // // budget.budgetStatus == BudgetStatus.completed
+      return Container(
+        height: 187,
+        width: MediaQuery.sizeOf(context).width,
+        decoration: BoxDecoration(
+            image: const DecorationImage(
+                image: AssetImage(AppImages.budgetCompleted), fit: BoxFit.fill),
+            color: AppColors.background,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8)),
+      );
     }
   }
 
@@ -116,9 +141,12 @@ class BudgetPage extends StatelessWidget {
           animation: true,
           lineHeight: 30.0,
           animationDuration: 2500,
-          percent: 1 - budget.remainBudgetPercent,
+          percent: 1 - budget.remainBudgetPercent >= 0
+              ? double.parse(
+                  (1 - budget.remainBudgetPercent).toStringAsFixed(2))
+              : 0,
           center: Text(
-            "${(1 - budget.remainBudgetPercent) * 100}%",
+            "${double.parse((1 - budget.remainBudgetPercent).toStringAsFixed(2)) * 100}%",
             style: const TextStyle(
               fontSize: 21,
               color: Colors.white,
@@ -153,15 +181,41 @@ class BudgetPage extends StatelessWidget {
           progressColor: AppColors.primary,
         ),
         const SizedBox(height: 6),
-        Text(
-          "* 하루 권장 생존 금액은 ${budget.recommendedDailyBudget}원입니다.",
-          style: const TextStyle(
-            fontSize: 21,
-            color: Colors.black,
-          ),
-        ),
+        budget.budgetStatus == BudgetStatus.completed
+            ? _completedText(context, budget)
+            : Text(
+                "* 하루 권장 생존 금액은 ${budget.recommendedDailyBudget}원입니다.",
+                style: const TextStyle(
+                  fontSize: 21,
+                  color: Colors.black,
+                ),
+              ),
       ],
     );
+  }
+
+  Widget _completedText(
+    BuildContext context,
+    BudgetEntity budget,
+  ) {
+    int remainBudget = budget.livingBudget - budget.usedBudget;
+    if (remainBudget > 0) {
+      return Text(
+        "* $remainBudget원 절약, 생존 성공!",
+        style: const TextStyle(
+          fontSize: 21,
+          color: Colors.black,
+        ),
+      );
+    } else {
+      return Text(
+        "* ${-remainBudget}원 과소비, 생존 실패!",
+        style: const TextStyle(
+          fontSize: 21,
+          color: Colors.black,
+        ),
+      );
+    }
   }
 
   Widget _addButton(
@@ -172,33 +226,75 @@ class BudgetPage extends StatelessWidget {
       height: 100,
       color: Colors.white,
       child: Center(
-        child: Builder(builder: (context) {
-          if (budget.budgetStatus == BudgetStatus.pending) {
-            return BasicAppButton(
-              onPressed: () {
-                AppNavigator.push(context, AddBudgetPage());
-              },
-              title: "생존 시작",
-            );
-          } else if (budget.budgetStatus == BudgetStatus.finishing) {
-            return BasicAppButton(
-              onPressed: () {
-                // TODO: 종료에 따른 Alert
-                // state 데이터 초기화
-              },
-              title: "탈출",
-            );
-          } else {
-            return BasicAppButton(
-              onPressed: () {
-                // starting ~ finishing 단계
-                // state 데이터 변경
-                // Alert 구현
-              },
-              title: "생존 진행",
-            );
-          }
-        }),
+        child: Builder(
+          builder: (context) {
+            if (budget.budgetStatus == BudgetStatus.pending) {
+              return BasicAppButton(
+                onPressed: () {
+                  AppNavigator.push(context, AddBudgetPage());
+                },
+                title: "생존 시작",
+              );
+            } else if (budget.budgetStatus == BudgetStatus.inProgress) {
+              return BasicReactiveButton(
+                onPressed: () async {
+                  int? result = await showDialog<int>(
+                      context: context,
+                      builder: (BuildContext context) => BudgetAlert());
+
+                  if (result != 0) {
+                    // budgetStatus.inProgress ~ budgetStatus.completed
+                    try {
+                      // ignore: use_build_context_synchronously
+                      await context.read<ButtonStateCubit>().execute(
+                          usecase: sl<SubstractBudgetUseCase>(),
+                          params: result);
+                      // ignore: use_build_context_synchronously
+                      context.read<BudgetDisplayCubit>().displayBudget();
+                    } catch (e) {
+                      var snackBar = SnackBar(
+                        content: Text(e.toString()),
+                        behavior: SnackBarBehavior.floating,
+                      );
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  } else {
+                    var snackBar = const SnackBar(
+                      content: Text("사용 금액을 입력해주세요."),
+                      behavior: SnackBarBehavior.floating,
+                    );
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                title: "생존 진행",
+              );
+            } else {
+              // budget.budgetStatus == BudgetStatus.completed
+              return BasicReactiveButton(
+                onPressed: () async {
+                  try {
+                    // ignore: use_build_context_synchronously
+                    await context
+                        .read<ButtonStateCubit>()
+                        .execute(usecase: sl<ResetBudgetUseCase>());
+                    // ignore: use_build_context_synchronously
+                    context.read<BudgetDisplayCubit>().displayBudget();
+                  } catch (e) {
+                    var snackBar = SnackBar(
+                      content: Text(e.toString()),
+                      behavior: SnackBarBehavior.floating,
+                    );
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                title: "탈출",
+              );
+            }
+          },
+        ),
       ),
     );
   }
