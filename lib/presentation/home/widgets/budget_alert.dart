@@ -49,10 +49,9 @@ class BudgetAlert extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: 값 입력 없이 완료 버튼 누를 때, 방지
-                  int useBudget = _useBudgetCon.text.isNotEmpty
+                  int? useBudget = _useBudgetCon.text.isNotEmpty
                       ? int.parse(_useBudgetCon.text)
-                      : 0;
+                      : null;
                   Navigator.of(context).pop(useBudget);
                 },
                 style: ElevatedButton.styleFrom(

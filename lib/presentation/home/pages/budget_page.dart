@@ -242,7 +242,7 @@ class BudgetPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) => BudgetAlert());
 
-                  if (result != 0) {
+                  if (result != null) {
                     // budgetStatus.inProgress ~ budgetStatus.completed
                     try {
                       // ignore: use_build_context_synchronously
