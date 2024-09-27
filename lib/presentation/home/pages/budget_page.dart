@@ -146,7 +146,7 @@ class BudgetPage extends StatelessWidget {
                   (1 - budget.remainBudgetPercent).toStringAsFixed(2))
               : 0,
           center: Text(
-            "${double.parse((1 - budget.remainBudgetPercent).toStringAsFixed(2)) * 100}%",
+            "${double.parse((((1 - budget.remainBudgetPercent)) * 100).toStringAsFixed(2))}%",
             style: const TextStyle(
               fontSize: 21,
               color: Colors.white,

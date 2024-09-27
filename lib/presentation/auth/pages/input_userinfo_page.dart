@@ -109,7 +109,7 @@ class InputUserinfoPage extends StatelessWidget {
           DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime.now(),
+            firstDate: DateTime(1900, 1, 1),
             lastDate: DateTime(DateTime.now().year + 1),
           );
           if (pickedDate != null) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,7 +79,15 @@ class SocialLogin {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      return credential.email!;
+      List<String> jwt = credential.identityToken?.split('.') ?? [];
+      String payload = jwt[1];
+      payload = base64.normalize(payload);
+      final List<int> jsonData = base64.decode(payload);
+      final userInfo = jsonDecode(utf8.decode(jsonData));
+      print(userInfo);
+      String email = userInfo['email'];
+      print("apple email: $email");
+      return email;
     } catch (e) {
       showToast("다시 시도해주세요.");
       return "apple-error";
