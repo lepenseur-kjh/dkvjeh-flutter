@@ -1,9 +1,14 @@
+import 'package:dkejvh/common/helper/navigator/app_navigator.dart';
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
 import 'package:dkejvh/domain/auth/entities/user.dart';
+import 'package:dkejvh/domain/auth/usecases/logout.dart';
+import 'package:dkejvh/presentation/auth/pages/sign_in_page.dart';
 import 'package:dkejvh/presentation/home/bloc/userinfo_cubit.dart';
 import 'package:dkejvh/presentation/home/bloc/userinfo_state.dart';
 import 'package:dkejvh/presentation/home/widgets/budget_card.dart';
 import 'package:dkejvh/presentation/home/widgets/schedule_card.dart';
+import 'package:dkejvh/service_locator.dart';
+import 'package:dkejvh/social_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -35,6 +40,58 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: ListView(
+          // padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+              ),
+              child: Text(
+                '이용해주셔서 감사합니다.\n서비스 고도화 중입니다.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text(
+                '로그아웃',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              onTap: () async {
+                var resp = await sl<LogoutUseCase>().call();
+                resp.fold((error) {
+                  showToast(error);
+                  return;
+                }, (data) {
+                  AppNavigator.pushReplacement(context, const SignInPage());
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text(
+                '회원탈퇴',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              onTap: () {
+                showToast("고객센터에 문의해주세요.");
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -96,7 +153,8 @@ class HomePage extends StatelessWidget {
   Widget _headerNotification(BuildContext context) {
     return IconButton(
         onPressed: () {
-          // TODO: 알림 페이지 이동
+          // 드로어 열기
+          Scaffold.of(context).openDrawer();
         },
         icon: Container(
           height: 50,

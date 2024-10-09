@@ -143,10 +143,10 @@ class BudgetPage extends StatelessWidget {
           animationDuration: 2500,
           percent: 1 - budget.remainBudgetPercent >= 0
               ? double.parse(
-                  (1 - budget.remainBudgetPercent).toStringAsFixed(2))
+                  (1 - budget.remainBudgetPercent).toStringAsFixed(3))
               : 0,
           center: Text(
-            "${double.parse((((1 - budget.remainBudgetPercent)) * 100).toStringAsFixed(2))}%",
+            "${double.parse((((1 - budget.remainBudgetPercent)) * 100).toStringAsFixed(3))}%",
             style: const TextStyle(
               fontSize: 21,
               color: Colors.white,
@@ -171,7 +171,7 @@ class BudgetPage extends StatelessWidget {
           animationDuration: 2500,
           percent: budget.remainDaysPercent,
           center: Text(
-            "${budget.remainDaysPercent * 100}%",
+            "${double.parse((budget.remainDaysPercent * 100).toStringAsFixed(3))}%",
             style: const TextStyle(
               fontSize: 21,
               color: Colors.white,
@@ -260,6 +260,7 @@ class BudgetPage extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   } else {
+                    // buget_alert에서 toast 제어로 인해 실행되지 않는 분기점.
                     var snackBar = const SnackBar(
                       content: Text("사용 금액을 입력해주세요."),
                       behavior: SnackBarBehavior.floating,

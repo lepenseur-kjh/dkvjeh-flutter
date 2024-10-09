@@ -7,6 +7,7 @@ import 'package:dkejvh/data/schedule/source/schedule_firebase_service.dart';
 import 'package:dkejvh/domain/auth/repository/auth_repository.dart';
 import 'package:dkejvh/domain/auth/usecases/get_user.dart';
 import 'package:dkejvh/domain/auth/usecases/is_logged_in.dart';
+import 'package:dkejvh/domain/auth/usecases/logout.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_in.dart';
 import 'package:dkejvh/domain/auth/usecases/sign_up.dart';
 import 'package:dkejvh/domain/auth/usecases/update_fcm_token.dart';
@@ -45,4 +46,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AddBudgetUsecase>(AddBudgetUsecase());
   sl.registerSingleton<SubstractBudgetUseCase>(SubstractBudgetUseCase());
   sl.registerSingleton<ResetBudgetUseCase>(ResetBudgetUseCase());
+  sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
 }

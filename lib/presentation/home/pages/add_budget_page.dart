@@ -8,6 +8,7 @@ import 'package:dkejvh/data/budget/models/add_budget_command.dart';
 import 'package:dkejvh/domain/budget/usecases/add_budget.dart';
 import 'package:dkejvh/presentation/home/pages/budget_page.dart';
 import 'package:dkejvh/service_locator.dart';
+import 'package:dkejvh/social_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,7 +78,7 @@ class AddBudgetPage extends StatelessWidget {
     return TextField(
       controller: _livingDaysCon,
       keyboardType: TextInputType.number,
-      decoration: const InputDecoration(hintText: "생존 일수를 입력해주세요. (예: 10)"),
+      decoration: const InputDecoration(hintText: "생존 일수를 입력해주세요. (예: 7)"),
       style: const TextStyle(
         fontSize: 21,
         color: Colors.white,
@@ -107,8 +108,24 @@ class AddBudgetPage extends StatelessWidget {
           builder: (context) {
             return BasicReactiveButton(
               onPressed: () {
-                // TODO: 0보다 작은 값 입력 시, 방지
-                // TODO: 값 입력 없이 완료 버튼 누를 때, 방지
+                if (_livingDaysCon.text == '') {
+                  showToast("생존 일수를 입력해주세요.");
+                  return;
+                }
+                if (_livingBudgetCon.text == '') {
+                  showToast("생존 금액을 입력해주세요.");
+                  return;
+                }
+                if (int.parse(_livingDaysCon.text).abs() < 0 ||
+                    int.parse(_livingDaysCon.text).abs() > 7) {
+                  showToast("생존 일수는 1 ~ 7일로 설정해주세요.");
+                  return;
+                }
+                if (int.parse(_livingBudgetCon.text).abs() < 1000 ||
+                    int.parse(_livingBudgetCon.text).abs() > 1000000) {
+                  showToast("생존 금액은 천원 ~ 백만원으로 설정해주세요.");
+                  return;
+                }
                 context.read<ButtonStateCubit>().execute(
                     usecase: sl<AddBudgetUsecase>(),
                     params: AddBudgetCommand(

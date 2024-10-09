@@ -99,10 +99,16 @@ class SignInPage extends StatelessWidget {
         child: Builder(builder: (context) {
           return BasicReactiveButton(
             onPressed: () async {
+              final email = await SocialLogin.kakaoLogin();
+              if (email == "kakao-error") {
+                showToast("다시 시도해주세요.");
+                return;
+              }
+              // ignore: use_build_context_synchronously
               context.read<ButtonStateCubit>().execute(
                   usecase: sl<SignInUseCase>(),
                   params: UserSignInRequest(
-                    email: await SocialLogin.kakaoLogin(),
+                    email: email,
                     password: dotenv.env["PW"]!,
                   ));
             },
@@ -122,10 +128,16 @@ class SignInPage extends StatelessWidget {
         child: Builder(builder: (context) {
           return BasicReactiveButton(
             onPressed: () async {
+              final email = await SocialLogin.appleLogin();
+              if (email == "apple-error") {
+                showToast("다시 시도해주세요.");
+                return;
+              }
+              // ignore: use_build_context_synchronously
               context.read<ButtonStateCubit>().execute(
                   usecase: sl<SignInUseCase>(),
                   params: UserSignInRequest(
-                    email: await SocialLogin.appleLogin(),
+                    email: email,
                     password: dotenv.env["PW"]!,
                   ));
             },

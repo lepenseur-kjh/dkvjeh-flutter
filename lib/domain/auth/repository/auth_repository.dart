@@ -9,4 +9,5 @@ abstract class AuthRepository {
   Future<Either> signIn(UserSignInRequest request);
   Future<Either> getUser();
   Future<Either> updateFcmToken(UpdateFcmCommand command);
+  Future<Either> logout();
 }

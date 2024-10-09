@@ -1,4 +1,5 @@
 import 'package:dkejvh/core/configs/theme/app_colors.dart';
+import 'package:dkejvh/social_login.dart';
 import 'package:flutter/material.dart';
 
 class BudgetAlert extends StatelessWidget {
@@ -52,6 +53,14 @@ class BudgetAlert extends StatelessWidget {
                   int? useBudget = _useBudgetCon.text.isNotEmpty
                       ? int.parse(_useBudgetCon.text)
                       : null;
+                  if (useBudget == null) {
+                    showToast("사용 금액을 입력해주세요.");
+                    return;
+                  }
+                  if (useBudget <= 0) {
+                    showToast("0보다 큰 금액을 입력해주세요.");
+                    return;
+                  }
                   Navigator.of(context).pop(useBudget);
                 },
                 style: ElevatedButton.styleFrom(

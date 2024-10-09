@@ -38,4 +38,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either> updateFcmToken(UpdateFcmCommand command) async {
     return await sl<AuthFirebaseService>().updateFcmToken(command);
   }
+
+  @override
+  Future<Either> logout() async {
+    return await sl<AuthFirebaseService>().logout();
+  }
 }

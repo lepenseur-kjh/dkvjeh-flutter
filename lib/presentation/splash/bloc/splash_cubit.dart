@@ -6,6 +6,7 @@ import 'package:dkejvh/push_notification.dart';
 import 'package:dkejvh/service_locator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(DisplaySplash());
@@ -15,7 +16,9 @@ class SplashCubit extends Cubit<SplashState> {
     var isLogin = await sl<IsLoggedInUsecase>().call();
     if (isLogin) {
       // 로그인 시, FCM 토큰 업데이트
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      // final vapidKey = dotenv.env["VAPIDKEY"];
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      print("fcmToken: $fcmToken");
       String mobileOS = getMobileOS();
       await sl<UpdateFcmTokenUseCase>().call(
           params: UpdateFcmCommand(

@@ -11,6 +11,7 @@ abstract class AuthFirebaseService {
   Future<Either> signIn(UserSignInRequest request);
   Future<Either> getUser();
   Future<Either> updateFcmToken(UpdateFcmCommand command);
+  Future<Either> logout();
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -106,6 +107,16 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
         "mobileOS": command.mobileOS,
       });
       return const Right("fcm token 업데이트 성공");
+    } catch (e) {
+      return const Left("다시 시도해주세요.");
+    }
+  }
+
+  @override
+  Future<Either> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return const Right("로그아웃 성공");
     } catch (e) {
       return const Left("다시 시도해주세요.");
     }

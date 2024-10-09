@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:dkejvh/push_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void showToast(String msg) {
   Fluttertoast.showToast(
@@ -27,7 +29,8 @@ class SocialLogin {
       print('user: $user');
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
-      showToast("에러 발생");
+      // showToast("다시 시도해주세요.");
+      // return "kakao-error";
     }
     // 카카오 로그인 구현 예제
     OAuthToken token;
@@ -66,7 +69,22 @@ class SocialLogin {
         showToast("사용자 정보 요청 실패");
       }
     } else {
-      showToast("카카오톡을 설치해주세요.");
+      String mobileOS = getMobileOS();
+      if (mobileOS == "Android") {
+        Uri storeUrl = Uri.parse(
+            "https://play.google.com/store/apps/details?id=com.kakao.talk");
+        if (await canLaunchUrl(storeUrl)) {
+          await launchUrl(storeUrl);
+        }
+      } else if (mobileOS == "iOS") {
+        Uri storeUrl = Uri.parse(
+            "https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1/id362057947");
+        if (await canLaunchUrl(storeUrl)) {
+          await launchUrl(storeUrl);
+        }
+      } else {
+        showToast("미지원 OS, 카카오톡을 설치해주세요.");
+      }
     }
     return "kakao-error";
   }

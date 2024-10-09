@@ -41,17 +41,22 @@ class BudgetEntity {
     // 3. completed -> pending
     int recommendedDailyBudget = 0;
     if (livingDays != 0 && livingBudget != 0) {
-      recommendedDailyBudget = livingBudget ~/ livingDays;
+      if (livingBudget - usedBudget > 0) {
+        recommendedDailyBudget =
+            (livingBudget - usedBudget) ~/ (livingDays - passedDays);
+      } else {
+        recommendedDailyBudget = 0;
+      }
     }
     double remainDaysPercent = 0.0;
     if (livingDays != 0 && passedDays != 0) {
       remainDaysPercent =
-          double.parse((passedDays / livingDays).toStringAsFixed(2));
+          double.parse((passedDays / livingDays).toStringAsFixed(3));
     }
     double remainBudgetPercent = 0.0;
     if (livingBudget != 0 && usedBudget != 0) {
       remainBudgetPercent =
-          double.parse((usedBudget / livingBudget).toStringAsFixed(2));
+          double.parse((usedBudget / livingBudget).toStringAsFixed(3));
     }
     BudgetStatus budgetStatus = BudgetStatus.pending;
     if (budgetStatusKey == "inProgress") {
