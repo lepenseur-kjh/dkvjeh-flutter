@@ -41,7 +41,7 @@ class BudgetEntity {
     // 3. completed -> pending
     int recommendedDailyBudget = 0;
     if (livingDays != 0 && livingBudget != 0) {
-      if (livingBudget - usedBudget > 0) {
+      if (livingBudget - usedBudget > 0 && livingDays - passedDays > 0) {
         recommendedDailyBudget =
             (livingBudget - usedBudget) ~/ (livingDays - passedDays);
       } else {

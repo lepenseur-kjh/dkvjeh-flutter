@@ -37,7 +37,9 @@ class BasicAppButton extends StatelessWidget {
                 )
             : Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 SvgPicture.asset(svgIcon!), // SVG 파일 경로
-                const SizedBox(width: 96), // 아이콘과 텍스트 사이의 간격
+                SizedBox(
+                    width: MediaQuery.sizeOf(context).width *
+                        0.24), // 아이콘과 텍스트 사이의 간격
                 content ??
                     Text(
                       title,
