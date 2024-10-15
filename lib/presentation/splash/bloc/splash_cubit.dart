@@ -18,7 +18,6 @@ class SplashCubit extends Cubit<SplashState> {
       // 로그인 시, FCM 토큰 업데이트
       // final vapidKey = dotenv.env["VAPIDKEY"];
       final fcmToken = await FirebaseMessaging.instance.getToken();
-      print("fcmToken: $fcmToken");
       String mobileOS = getMobileOS();
       await sl<UpdateFcmTokenUseCase>().call(
           params: UpdateFcmCommand(
