@@ -1,5 +1,5 @@
 #  개인 생산성 및 재정 관리 앱 '아더포'
-### 학습 목표
+### 학습 및 구현 목표
 *  Flutter 학습을 통해 Android/iOS 앱 출시를 목표로 개발했으며,일상생활에 도움이 되는 앱 제작을 통해 사용자 중심 개발 경험 습득
   * Firebase 활용 백엔드 및 서버리스 기능 구축
 * GoogleFirebase(Authentication, Firestore, Cloud Functions)를 폭넓게 활용
