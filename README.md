@@ -7,7 +7,7 @@
   * 알림 시스템 구현을 통한 일정 관리 편의성 향상
 * FirebaseCloudFunctions를 활용하여 일정 등록 제한(최대 3개)
   * 1시간 간격의 자동 푸시 알림 발송 시스템을 구현
-    * [Git Repository](https://github.com/dkejvh/cloud-func-dkejvh/blob/main/functions/index.js)
+    * [Git Repository](https://github.com/lepenseur-kjh/dkejvh-cloudfunc/blob/main/functions/index.js)
   * 게임형 인터랙션 가계부 기능 개발
 * 제한된 금액 및 지출 조건 내에서 생존하는 게임형 가계부 인터랙션을 직접 기획하고 구현
 * 사용자의 몰입도를 고려하고 재정관리 습관 형성을 유도했으며, 디바이스 내 로컬저장소를 활용하여 데이터를 관리
